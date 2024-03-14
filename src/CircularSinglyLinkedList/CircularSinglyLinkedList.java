@@ -1,3 +1,7 @@
+package CircularSinglyLinkedList;
+
+import CircularSinglyLinkedList.Node;
+
 public class CircularSinglyLinkedList {
 
     public Node head;

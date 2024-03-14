@@ -1,55 +1,57 @@
-public class DoublyLinkedList {
+package CircularDoublyLinkedList;
+
+public class CircularDoublyLInkedList {
 
     public DoublyNode head;
     public DoublyNode tail;
     public int size;
 
-    public DoublyNode createDLL (int value) {
+    public DoublyNode createCDLL(int value) {
         DoublyNode node = new DoublyNode();
         node.value = value;
-        node.next = null;
-        node.prev = null;
-        head = node;
+        node.next = node;
+        node.prev = node;
         tail = node;
-        size++;
+        head = node;
+        size = 1;
         return head;
     }
 
-    public void insertInDLL(int value, int position) {
+    public void insertInCdll(int value, int position) {
         DoublyNode node = new DoublyNode();
         node.value = value;
         if (head == null) {
-            createDLL(value);
+            createCDLL(value);
         } else if (position == 0) {
             node.next = head;
-            node.prev = null;
+            node.prev = tail;
             head.prev = node;
+            tail.next = node;
             head = node;
         } else if (position >= size) {
-            tail.next = node;
             node.prev = tail;
-            node.next = null;
+            node.next = head;
+            tail.next = node;
+            head.prev = node;
             tail = node;
-        } else {
+        }else {
             DoublyNode currNode = head;
-            DoublyNode tempNode;
             int index = 0;
             while (index < position - 1) {
                 currNode = currNode.next;
                 index++;
             }
-            tempNode = currNode.next;
+            node.next = currNode.next;
+            currNode.next.prev = node;
             currNode.next = node;
-            tempNode.next.prev = node;
             node.prev = currNode;
-            node.next = tempNode.next;
         }
         size++;
     }
 
-    public void traverseDll(){
+    public void traverseCdll(){
         if (head == null){
-            System.out.println("CircularSinglyLinkedList does not exist");
+            System.out.println("CircularDoublyLinkedList does not exist");
         }
         DoublyNode currNode = head;
         for (int i = 0; i < size; i++){
@@ -62,9 +64,9 @@ public class DoublyLinkedList {
         System.out.println(" ");
     }
 
-    public void reverseTraverseDll(){
+    public void reverseTraverseCdll(){
         if (head == null){
-            System.out.println("CircularSinglyLinkedList does not exist");
+            System.out.println("CircularDoublyLinkedList does not exist");
         }
         DoublyNode currNode = tail;
         for (int i = 0; i < size; i++){
@@ -77,7 +79,7 @@ public class DoublyLinkedList {
         System.out.println(" ");
     }
 
-    public void searchInDll(int value){
+    public void searchInCdll(int value){
         DoublyNode currNode = head;
         for (int i = 0; i < size; i++){
             if (currNode.value == value){
@@ -87,12 +89,13 @@ public class DoublyLinkedList {
         }
     }
 
-    public void deleteInDll (int position) {
+    public void deleteInCdll(int position) {
         if (head == null) {
-            System.out.println("DLL does ot exist");
+            System.out.println("The CDLL does not exist");
         } else if (position == 0) {
             head = head.next;
-            head.prev = null;
+            tail.next = head;
+            head.prev = tail;
             size--;
             if (size == 0) {
                 head = null;
@@ -100,16 +103,19 @@ public class DoublyLinkedList {
             }
         } else if (position >= size) {
             tail = tail.prev;
-            tail.next = null;
+            head.prev = tail;
+            tail.next = head;
             size--;
             if (size == 0) {
                 head = null;
                 tail = null;
             }
         } else {
+            int index = 0;
             DoublyNode currNode = head;
-            for (int i = 0; i < position - 1; i++) {
+            while (index < position - 1) {
                 currNode = currNode.next;
+                index++;
             }
             currNode.next = currNode.next.next;
             currNode.next.prev = currNode;
@@ -117,14 +123,15 @@ public class DoublyLinkedList {
         }
     }
 
-    public void deleteDll() {
+    public void deleteCdll() {
         DoublyNode currNode = head;
-        for (int i = 0; i < size; i++) {
+        int index = 0;
+        while (index < size) {
             currNode.prev = null;
             currNode = currNode.next;
+            index++;
         }
         head = null;
-        tail =null;
-        size = 0;
+        tail = null;
     }
 }
